@@ -6,7 +6,7 @@ Attendify is an AI-powered attendance system that uses face recognition to mark 
 ## Team
 **Teen Titans**
 - Chandni Varyani
-- Gargi
+- Gargi Narooka
 
 ## MVP Demo Link
 https://attendify-4ed398e3.base44.app
@@ -37,3 +37,4 @@ https://attendify-4ed398e3.base44.app
 - Face recognition uses dlib; may require additional setup on some systems (e.g., install dlib dependencies).
 - Attendance is marked only once per day per student.
 - Export generates a proper Excel file.
+
