@@ -3,6 +3,14 @@
 ## Overview
 Attendify is an AI-powered attendance system that uses face recognition to mark attendance from a single group photo. Built for hackathons, it features student registration, automatic attendance marking, and exportable reports.
 
+## Team
+**Teen Titans**
+- Chandni Varyani
+- Gargi
+
+## MVP Demo Link
+https://attendify-4ed398e3.base44.app
+
 ## Tech Stack
 - Python
 - OpenCV
