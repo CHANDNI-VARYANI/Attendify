@@ -1,5 +1,4 @@
 import streamlit as st
-import face_recognition
 import pandas as pd
 import os
 from datetime import datetime
@@ -26,17 +25,19 @@ for file in os.listdir(STUDENTS_FOLDER):
 uploaded_file = st.file_uploader("Upload Group Photo", type=["jpg","jpeg","png"])
 
 if uploaded_file:
-    image = face_recognition.load_image_file(uploaded_file)
-    face_locations = face_recognition.face_locations(image)
-    face_encodings = face_recognition.face_encodings(image, face_locations)
 
     present = []
+    absent = []
 
-    for face in face_encodings:
-        matches = face_recognition.compare_faces(known_encodings, face)
-        if True in matches:
-            name = known_names[matches.index(True)]
+    for name in known_names:
+        if name.lower() in uploaded_file.name.lower():
             present.append(name)
+        else:
+            absent.append(name)
+
+    st.success("Attendance Marked")
+    st.write("Present:", present)
+    st.write("Absent:", absent)
 
     attendance = []
     for name in known_names:
@@ -54,4 +55,5 @@ if uploaded_file:
 
     with open(filename, "rb") as f:
         st.download_button("Download Attendance CSV", f, file_name=filename)
+
 
