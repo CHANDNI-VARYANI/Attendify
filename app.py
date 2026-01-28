@@ -9,10 +9,10 @@ st.title("📸 Attendify - Smart AI Attendance System")
 
 STUDENTS_FOLDER = "Students"
 
-# Load student faces
 known_encodings = []
 known_names = []
 
+# Load registered students
 for file in os.listdir(STUDENTS_FOLDER):
     if file.endswith(".jpg") or file.endswith(".jpeg") or file.endswith(".png"):
         img = face_recognition.load_image_file(
@@ -23,36 +23,32 @@ for file in os.listdir(STUDENTS_FOLDER):
             known_encodings.append(enc[0])
             known_names.append(file.split(".")[0])
 
+st.success(f"Registered Students: {known_names}")
+
 uploaded_file = st.file_uploader("Upload Group Photo", type=["jpg","jpeg","png"])
 
 if uploaded_file:
+    group_img = face_recognition.load_image_file(uploaded_file)
+    group_locations = face_recognition.face_locations(group_img)
+    group_encodings = face_recognition.face_encodings(group_img, group_locations)
 
     present = []
-    absent = []
 
-    image = face_recognition.load_image_file(uploaded_file)
-face_locations = face_recognition.face_locations(image)
-face_encodings = face_recognition.face_encodings(image, face_locations)
-
-present = []
-absent = []
-
-for face_encoding in face_encodings:
-    matches = face_recognition.compare_faces(known_encodings, face_encoding)
-    if True in matches:
-        matched_index = matches.index(True)
-        name = known_names[matched_index]
-        if name not in present:
+    for face in group_encodings:
+        matches = face_recognition.compare_faces(known_encodings, face)
+        if True in matches:
+            name = known_names[matches.index(True)]
             present.append(name)
 
-for name in known_names:
-    if name not in present:
-        absent.append(name)
-
+    absent = [name for name in known_names if name not in present]
 
     st.success("Attendance Marked")
-    st.write("Present:", present)
-    st.write("Absent:", absent)
+
+    st.write("### Present Students")
+    st.write(present)
+
+    st.write("### Absent Students")
+    st.write(absent)
 
     attendance = []
     for name in known_names:
@@ -62,16 +58,11 @@ for name in known_names:
             attendance.append([name, "Absent"])
 
     df = pd.DataFrame(attendance, columns=["Name","Status"])
-    st.success("Attendance Marked Successfully")
     st.dataframe(df)
 
     filename = f"attendance_{datetime.now().date()}.csv"
     df.to_csv(filename, index=False)
 
-    with open(filename, "rb") as f:
+    with open(filename,"rb") as f:
         st.download_button("Download Attendance CSV", f, file_name=filename)
-
-
-
-
 
