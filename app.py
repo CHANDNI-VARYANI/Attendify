@@ -1,5 +1,5 @@
 import streamlit as st
-from deepface import DeepFace
+import face_recognition
 import pandas as pd
 import os
 from datetime import datetime
@@ -70,6 +70,7 @@ for name in known_names:
 
     with open(filename, "rb") as f:
         st.download_button("Download Attendance CSV", f, file_name=filename)
+
 
 
 
