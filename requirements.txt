@@ -1,8 +1,10 @@
 streamlit
 opencv-python-headless
-numpy
+deepface
 pandas
+numpy
 Pillow
+
 
 
 
