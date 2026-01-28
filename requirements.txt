@@ -1,8 +1,7 @@
 streamlit
-face_recognition
 pandas
-opencv-python-headless
 numpy
+
 
 
 
