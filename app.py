@@ -30,11 +30,25 @@ if uploaded_file:
     present = []
     absent = []
 
-    for name in known_names:
-        if name.lower() in uploaded_file.name.lower():
+    image = face_recognition.load_image_file(uploaded_file)
+face_locations = face_recognition.face_locations(image)
+face_encodings = face_recognition.face_encodings(image, face_locations)
+
+present = []
+absent = []
+
+for face_encoding in face_encodings:
+    matches = face_recognition.compare_faces(known_encodings, face_encoding)
+    if True in matches:
+        matched_index = matches.index(True)
+        name = known_names[matched_index]
+        if name not in present:
             present.append(name)
-        else:
-            absent.append(name)
+
+for name in known_names:
+    if name not in present:
+        absent.append(name)
+
 
     st.success("Attendance Marked")
     st.write("Present:", present)
@@ -56,6 +70,7 @@ if uploaded_file:
 
     with open(filename, "rb") as f:
         st.download_button("Download Attendance CSV", f, file_name=filename)
+
 
 
 
